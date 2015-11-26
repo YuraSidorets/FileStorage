@@ -52,13 +52,13 @@ namespace Server
                 con.ConnectionString = mysqlCSB.ConnectionString;
 
                 MySqlCommand mainCommand = new MySqlCommand(queryString, con);
-                MySqlCommand timeoutCommand = new MySqlCommand("set net_write_timeout = 99999; set net_read_timeout = 99999", con);
+                MySqlCommand timeoutCommand = new MySqlCommand("set net_write_timeout = 99999999; set net_read_timeout = 9999999", con);
 
                 try
                 {
-                    byte[] data = (byte[])info["Data"];
+                    object data = info["Data"];
 
-                    MySqlParameter param = new MySqlParameter("?file", MySqlDbType.LongBlob, data.Length);
+                    MySqlParameter param = new MySqlParameter("?file", MySqlDbType.LongBlob);
                     param.Value = data;
                     mainCommand.Parameters.Add(param);
 
@@ -74,7 +74,6 @@ namespace Server
                 {
                     //!!!!!!!!!
                     Console.WriteLine(e.Message);
-                    Console.ReadLine();
                 }
             }
         }
@@ -83,7 +82,7 @@ namespace Server
         /// <summary>
         /// Returns DataTable instance that includes all the values in db except binary data
         /// </summary>
-        public static DataTable GetDataTable()
+        public static object GetDataTable()
         {
             Init();
 
@@ -94,7 +93,7 @@ namespace Server
                                Size,
                                Description               
                         FROM   new_table 
-                        WHERE  Id > 5";
+                         WHERE  Id > 5";
             DataTable dt = new DataTable();
 
             using (MySqlConnection con = new MySqlConnection())
@@ -109,7 +108,7 @@ namespace Server
                 }
 
             }
-            return dt;
+            return (object) dt;
         }
 
         public static object GetFileToWrite(int id)

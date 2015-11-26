@@ -72,10 +72,12 @@ namespace Server
             
             do
             {
+                Thread.Sleep(10);
                 dataCitit = netStream.Read(data, 0, data.Length);
                 fs.Write(data, 0, dataCitit);
                 totalBytes += dataCitit;
-            } while (netStream.DataAvailable);
+            }
+            while (netStream.DataAvailable);
             fs.Close();
             
             Console.WriteLine("Получено байт: {0}", totalBytes);
@@ -84,29 +86,48 @@ namespace Server
 
             BinaryFormatter bf = new BinaryFormatter();
             Dictionary<string, object> contentOfAddingFile;
-
-            using (MemoryStream ms = new MemoryStream(File.ReadAllBytes("$temp")))
+            try
             {
-                contentOfAddingFile = (Dictionary<string, object>)bf.Deserialize(ms);
-            }
-
-            if (contentOfAddingFile["Command"].ToString().Equals("Add"))
-                DBWorker.SetValue(contentOfAddingFile);
-            else if (contentOfAddingFile["Command"].ToString().Equals("Download"))
-            {
-                object fileToSend = DBWorker.GetFileToWrite((int.Parse((string)contentOfAddingFile["Id"])));
-
-                using (MemoryStream ms = new MemoryStream())
+                using (MemoryStream ms = new MemoryStream(File.ReadAllBytes("$temp")))
                 {
-                    bf.Serialize(ms, fileToSend);
-
-                    netStream.Write(ms.ToArray(), 0, ms.ToArray().Length);
+                    contentOfAddingFile = (Dictionary<string, object>)bf.Deserialize(ms);
                 }
+                if (contentOfAddingFile["Command"].ToString().Equals("Add"))
+                    DBWorker.SetValue(contentOfAddingFile);
+
+                else if (contentOfAddingFile["Command"].ToString().Equals("Download"))
+                {
+                    object fileToSend = DBWorker.GetFileToWrite((int.Parse((string)contentOfAddingFile["Id"])));
+
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        bf.Serialize(ms, fileToSend);
+
+                        netStream.Write(ms.ToArray(), 0, ms.ToArray().Length);
+                    }
+                }
+
+                else if (contentOfAddingFile["Command"].ToString().Equals("Refresh"))
+                {
+                    object fileToSend = DBWorker.GetDataTable();
+
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        bf.Serialize(ms, fileToSend);
+
+                        netStream.Write(ms.ToArray(), 0, ms.ToArray().Length);
+                    }
+                }
+                else
+                    throw new FormatException();
+                netStream.Close();
+                File.Delete("$temp");
             }
-            else
-                throw new FormatException();
-            netStream.Close();
-            File.Delete("$temp");
+            catch (Exception e)
+            {
+
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }
