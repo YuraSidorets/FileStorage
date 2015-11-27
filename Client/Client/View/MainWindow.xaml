@@ -1,19 +1,34 @@
-﻿<Controls:MetroWindow  x:Class="Client.MainWindow"
+﻿<controls:MetroWindow  x:Class="Client.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client"
-        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+       xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         Title="Data Storage" Height="600" Width="900
-        " Background="#FF2D2D30">
+        " Background="#FF2D2D30"
+        GlowBrush="{DynamicResource AccentColorBrush}"
+        BorderThickness="1"
+        WindowStartupLocation="CenterScreen">
+
+   
+
+    <controls:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/lime.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        
+    </controls:MetroWindow.Resources>
 
     <Window.DataContext>
         <local:MainWindowViewModel></local:MainWindowViewModel>
     </Window.DataContext>
 
-    <Grid>
+    <Grid >
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="545*"/>
@@ -25,25 +40,23 @@
                     <GradientStop Color="White" Offset="1"/>
                 </LinearGradientBrush>
             </Grid.Background>
-            <Menu x:Name="menu"  Height="25" VerticalAlignment="Top" Background="#FF333337" Grid.ColumnSpan="2">
-                <MenuItem x:Name="menuFile" Header=" File" Height="25" Width="40" FontFamily="Segoe UI Black" TextBlock.TextAlignment="Center"  RenderTransformOrigin="0.556,0.6" Background="#FF333337" Foreground="#FFDCD2D2">
+            <Menu x:Name="menu"  Height="25" VerticalAlignment="Top" Background="#FF333337" Grid.ColumnSpan="2" Style="{StaticResource {x:Type Menu}}">
+                <MenuItem x:Name="menuFile" Header=" File" Height="25" Width="40" FontFamily="Segoe UI Black" TextBlock.TextAlignment="Center"  RenderTransformOrigin="0.556,0.6" Background="#FF333337" Foreground="#FFDCD2D2"  Style="{StaticResource {x:Type MenuItem}}">
 
-                    <Button Background="#FF333337" Foreground="#FFDCD2D2" Content="Upload" Command="{Binding Upload}"/>
+                    <Button Background="#FF333337" Foreground="#FFDCD2D2" Content="Upload" Command="{Binding Upload}" Style="{StaticResource {x:Type Button}}"/>
 
-                    <Button Background="#FF333337" Foreground="#FFDCD2D2" Content="Download" Command="{Binding Download}"/>
+                    <Button Background="#FF333337" Foreground="#FFDCD2D2" Content="Download" Command="{Binding Download}"  Style="{StaticResource {x:Type Button}}"/>
                 </MenuItem>
-                <MenuItem x:Name="menuAdd" Header="        Refresh" Height="25" Background="#FF333337" Width="120" FontFamily="Segoe UI Black" TextBlock.TextAlignment="Center" RenderTransformOrigin="0.556,0.6" Foreground="#FFDCD2D2" Command="{Binding Refresh}">
-
-                </MenuItem>
-                <MenuItem x:Name="menuHelp" Header="    Help" Height="25" Background="#FF333337" Width="70" FontFamily="Segoe UI Black" TextBlock.TextAlignment="Center" RenderTransformOrigin="0.556,0.6" Foreground="#FFDCD2D2">
+                <MenuItem x:Name="menuAdd" Header="        Refresh" Height="25" Background="#FF333337" Width="120" FontFamily="Segoe UI Black" TextBlock.TextAlignment="Center" RenderTransformOrigin="0.556,0.6" Foreground="#FFDCD2D2" Command="{Binding Refresh}"  Style="{StaticResource {x:Type MenuItem}}">
 
                 </MenuItem>
-                <MenuItem x:Name="menuAbout" Header="      About" Height="25" Background="#FF333337" Width="90" FontFamily="Segoe UI Black" TextBlock.TextAlignment="Center" RenderTransformOrigin="0.556,0.6" Foreground="#FFDCD2D2">
+                <MenuItem x:Name="menuHelp" Header="    Help" Height="25" Background="#FF333337" Width="70" FontFamily="Segoe UI Black" TextBlock.TextAlignment="Center" RenderTransformOrigin="0.556,0.6" Foreground="#FFDCD2D2"  Style="{StaticResource {x:Type MenuItem}}">
 
                 </MenuItem>
+                <MenuItem x:Name="menuAbout" Header="      About" Height="25" Background="#FF333337" Width="90" FontFamily="Segoe UI Black" TextBlock.TextAlignment="Center" RenderTransformOrigin="0.556,0.6" Foreground="#FFDCD2D2"  Style="{StaticResource {x:Type MenuItem}}"/>
             </Menu>
-            <TabControl x:Name="tabControl" Grid.ColumnSpan="2" Margin="0,25,0,0">
-                <TabItem x:Name="previewTab" Header="Preview" Margin="-2,-2,-66,0" FontFamily="Roboto Black" Background="#FF656565">
+            <TabControl x:Name="tabControl" Grid.ColumnSpan="2" Margin="0,25,0,0" Style="{StaticResource {x:Type TabControl}}">
+                <TabItem x:Name="previewTab" Header="Preview" Margin="-2,-2,-66,0" FontFamily="Roboto Black" Background="#FF656565" Style="{StaticResource {x:Type TabItem}}">
                     <Grid>
                         <Grid.ColumnDefinitions>
 
@@ -54,10 +67,10 @@
                                 <GradientStop Color="#FFEFEFEF" Offset="1"/>
                             </LinearGradientBrush>
                         </Grid.Background>
-                        <DataGrid x:Name="dataGrid" AutoGenerateColumns="True"  ItemsSource="{Binding _dataTable}"  CanUserDeleteRows="False" CanUserAddRows="False" IsReadOnly="True" ColumnWidth="*" SelectedItem="{Binding SelectedItem}" SelectedIndex="{Binding SelectedIndex}"/>
+                        <DataGrid x:Name="dataGrid" AutoGenerateColumns="True"  ItemsSource="{Binding _dataTable}"  CanUserDeleteRows="False" CanUserAddRows="False" IsReadOnly="True" ColumnWidth="*" SelectedIndex="{Binding SelectedIndex}"/>
                     </Grid>
                 </TabItem>
-                <TabItem x:Name="searchTab" Header="Search" Margin="67,-2,-126,0" Background="#FF656565" FontFamily="Roboto Black" FontWeight="Bold">
+                <TabItem x:Name="searchTab" Header="Search" Margin="67,-2,-126,0" Background="#FF656565" FontFamily="Roboto Black" FontWeight="Bold" Style="{StaticResource {x:Type TabItem}}">
                     <Grid>
                         <Grid.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -70,15 +83,15 @@
                             <ColumnDefinition Width="5*"/>
                             <ColumnDefinition Width="427*"/>
                         </Grid.ColumnDefinitions>
-                        <DataGrid x:Name="dataGrid_Copy" Grid.Column="2" Margin="7,0,0,0"/>
-                        <TextBox x:Name="nameBox" HorizontalAlignment="Left" Height="23" Margin="10,32,0,0" TextWrapping="Wrap" Text="File Name" VerticalAlignment="Top" Width="212"/>
-                        <TextBox x:Name="typeBox" HorizontalAlignment="Left" Height="23" Margin="10,97,0,0" TextWrapping="Wrap" Text="Type of File" VerticalAlignment="Top" Width="212"/>
-                        <TextBox x:Name="textBox_Copy1" HorizontalAlignment="Left" Height="23" Margin="10,157,0,0" TextWrapping="Wrap" Text="Date of creation" VerticalAlignment="Top" Width="212"/>
-                        <Button x:Name="buttonSearch" Content="Search" HorizontalAlignment="Left" Margin="147,200,0,0" VerticalAlignment="Top" Width="75"/>
+                        <DataGrid x:Name="dataGrid_Copy" Grid.Column="2" Margin="7,0,0,0" Style="{StaticResource {x:Type DataGrid}}"/>
+                        <TextBox x:Name="nameBox" HorizontalAlignment="Left" Height="23" Margin="10,32,0,0" TextWrapping="Wrap" Text="File Name" VerticalAlignment="Top" Width="212" Style="{StaticResource {x:Type TextBox}}"/>
+                        <TextBox x:Name="typeBox" HorizontalAlignment="Left" Height="23" Margin="10,97,0,0" TextWrapping="Wrap" Text="Type of File" VerticalAlignment="Top" Width="212" Style="{StaticResource {x:Type TextBox}}"/>
+                        <TextBox x:Name="textBox_Copy1" HorizontalAlignment="Left" Height="23" Margin="10,157,0,0" TextWrapping="Wrap" Text="Date of creation" VerticalAlignment="Top" Width="212" Style="{StaticResource {x:Type TextBox}}"/>
+                        <Button x:Name="buttonSearch" Content="Search" HorizontalAlignment="Left" Margin="147,200,0,0" VerticalAlignment="Top" Width="75" Style="{StaticResource {x:Type Button}}"/>
                     </Grid>
                 </TabItem>
             </TabControl>
         </Grid>
 
     </Grid>
-</Controls:MetroWindow>
+</controls:MetroWindow>

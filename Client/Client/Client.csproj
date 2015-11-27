@@ -70,6 +70,9 @@
     </Compile>
     <Compile Include="View Model\MainWindowViewModel.cs" />
     <Compile Include="View Model\ViewModelBase.cs" />
+    <Compile Include="View\AnotherWindow.xaml.cs">
+      <DependentUpon>AnotherWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -106,6 +109,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="View\AnotherWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -1,0 +1,37 @@
+﻿<controls:MetroWindow x:Name="AnotherWindow1"  
+ x:Class="Client.View.AnotherWindow"
+         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Client"
+       xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        mc:Ignorable="d"
+        Title="Data Storage" Height="500" Width="600
+        " Background="#FF2D2D30"
+        GlowBrush="{DynamicResource AccentColorBrush}"
+        BorderThickness="1"
+        WindowStartupLocation="CenterScreen"
+                      >
+    <controls:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.xaml" />
+
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/steel.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </controls:MetroWindow.Resources>
+    <Window.DataContext>
+        <local:MainWindowViewModel></local:MainWindowViewModel>
+    </Window.DataContext>
+
+    <Grid Margin="0,0,113,0">
+        <StackPanel Margin="480,0,-111,-1" Orientation="Vertical">
+            <Button x:Name="button" Content="Refresh" Background="SlateGray" Foreground="Azure" Style="{StaticResource {x:Type Button}}" Command="{Binding Refresh}" HorizontalAlignment="Right" Width="108"/>
+            <Button x:Name="button_Copy" Content="Upload" Background="SlateGray" Foreground="Azure" Style="{StaticResource {x:Type Button}}" Command="{Binding Upload}" HorizontalAlignment="Right" Width="108"/>
+            <Button x:Name="button_Copy1" Content="Download" Background="SlateGray" Foreground="Azure" Style="{StaticResource {x:Type Button}}" Command="{Binding Download}" HorizontalAlignment="Right" Width="108"/>
+        </StackPanel>
+        <DataGrid x:Name="dataGrid" AutoGenerateColumns="True" Background="Gainsboro"  ItemsSource="{Binding _dataTable}"  CanUserDeleteRows="False" CanUserAddRows="False" IsReadOnly="True" ColumnWidth="*" SelectedIndex="{Binding SelectedIndex}"/>
+    </Grid>
+</controls:MetroWindow>
